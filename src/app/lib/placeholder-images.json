@@ -1,0 +1,23 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "safari-bg",
+      "description": "Simulated Safari background",
+      "imageUrl": "https://picsum.photos/seed/safari/1200/800",
+      "imageHint": "safari browser"
+    },
+    {
+      "id": "music-bg",
+      "description": "Simulated Music app background",
+      "imageUrl": "https://picsum.photos/seed/music/1200/800",
+      "imageHint": "music player"
+    },
+    {
+      "id": "editor-bg",
+      "description": "Simulated Text Editor background",
+      "imageUrl": "https://picsum.photos/seed/editor/1200/800",
+      "imageHint": "text editor"
+    }
+  ]
+}
