@@ -1,5 +1,5 @@
 
-export type AppContext = 'Safari' | 'Music' | 'Text Editor' | 'Calendar' | 'Photos' | 'System';
+export type AppContext = 'Safari' | 'Music' | 'Text Editor' | 'Calendar' | 'Photos' | 'Finder' | 'System';
 
 export interface TouchBarAction {
   id: string;

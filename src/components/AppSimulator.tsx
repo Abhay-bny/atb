@@ -1,8 +1,9 @@
+
 'use client';
 
 import React from 'react';
 import { AppContext } from '@/lib/types';
-import { Compass, Music, FileText, Calendar, Image as ImageIcon, LayoutGrid, Play, X, Minus, Maximize2 } from 'lucide-react';
+import { Compass, Music, FileText, Calendar, Image as ImageIcon, LayoutGrid, Play, Monitor } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -13,7 +14,8 @@ interface AppSimulatorProps {
 
 export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
   const apps: { id: AppContext; icon: any; color: string }[] = [
-    { id: 'Safari', icon: Compass, color: 'bg-blue-500' },
+    { id: 'Finder', icon: Monitor, color: 'bg-blue-400' },
+    { id: 'Safari', icon: Compass, color: 'bg-blue-600' },
     { id: 'Music', icon: Music, color: 'bg-pink-500' },
     { id: 'Text Editor', icon: FileText, color: 'bg-orange-400' },
     { id: 'Calendar', icon: Calendar, color: 'bg-red-500' },
@@ -21,8 +23,8 @@ export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
   ];
 
   return (
-    <div className="flex-1 flex flex-col p-8 pb-24 overflow-hidden relative">
-      {/* Desktop Background simulated by color gradient */}
+    <div className="flex-1 flex flex-col p-8 pb-32 overflow-hidden relative">
+      {/* Desktop Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-[#14181F] to-black -z-10" />
       
       {/* Main Window */}
@@ -33,7 +35,7 @@ export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
             <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
             <div className="w-3 h-3 rounded-full bg-green-500/80" />
           </div>
-          <div className="flex-1 text-center text-xs font-medium text-white/40">
+          <div className="flex-1 text-center text-xs font-medium text-white/40 tracking-tight">
             {activeApp}
           </div>
         </div>
@@ -46,16 +48,6 @@ export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
                 <Compass size={18} className="text-white/40" />
                 <span className="text-sm text-white/30">Search or enter website name</span>
               </div>
-              <div className="grid grid-cols-4 gap-4 mt-8">
-                {[1,2,3,4].map(i => (
-                   <div key={i} className="flex flex-col items-center gap-2">
-                     <div className="w-14 h-14 rounded-xl bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center border border-white/5">
-                       <LayoutGrid size={24} className="text-white/60" />
-                     </div>
-                     <span className="text-[10px] text-white/40">Favorites</span>
-                   </div>
-                ))}
-              </div>
             </div>
           )}
 
@@ -66,7 +58,6 @@ export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
                   <div className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Library</div>
                   <div className="text-sm text-primary font-medium">Listen Now</div>
                   <div className="text-sm text-white/60">Radio</div>
-                  <div className="text-sm text-white/60">Recently Added</div>
                 </div>
               </div>
               <div className="flex-1 p-10 flex flex-col items-center justify-center text-center space-y-4">
@@ -90,6 +81,19 @@ export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
             </div>
           )}
 
+          {activeApp === 'Finder' && (
+            <div className="w-full h-full p-6 grid grid-cols-4 gap-6 content-start">
+               {[1,2,3,4,5,6].map(i => (
+                 <div key={i} className="flex flex-col items-center gap-2 group">
+                   <div className="w-16 h-16 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/30 transition-colors">
+                     <Folder size={32} />
+                   </div>
+                   <span className="text-xs text-white/60">Project {i}</span>
+                 </div>
+               ))}
+            </div>
+          )}
+
           {activeApp === 'Text Editor' && (
             <div className="p-12 w-full h-full flex flex-col">
               <div className="flex-1 bg-white/5 rounded-lg p-8 font-serif text-lg leading-relaxed text-white/80 outline-none border border-white/5">
@@ -100,16 +104,16 @@ export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
           )}
 
           {(activeApp === 'Calendar' || activeApp === 'Photos') && (
-            <div className="text-white/20 flex flex-col items-center">
+            <div className="text-white/10 flex flex-col items-center">
               <LayoutGrid size={120} strokeWidth={0.5} />
-              <p className="mt-4 text-sm uppercase tracking-[0.2em]">{activeApp} View</p>
+              <p className="mt-4 text-xs uppercase tracking-[0.3em] font-medium opacity-50">{activeApp}</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Virtual Dock */}
-      <div className="mt-auto self-center bg-white/10 backdrop-blur-3xl px-2 py-2 rounded-2xl flex items-center gap-2 border border-white/10 shadow-xl">
+      <div className="mt-auto self-center bg-white/10 backdrop-blur-3xl px-2 py-2 rounded-2xl flex items-center gap-2 border border-white/10 shadow-xl mb-4">
         {apps.map((app) => (
           <button
             key={app.id}
@@ -126,12 +130,20 @@ export function AppSimulator({ activeApp, onAppSwitch }: AppSimulatorProps) {
               activeApp === app.id ? "opacity-100" : "opacity-0"
             )} />
             {/* Tooltip */}
-            <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black/80 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black/80 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap backdrop-blur-md">
               {app.id}
             </div>
           </button>
         ))}
       </div>
     </div>
+  );
+}
+
+function Folder({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+    </svg>
   );
 }
