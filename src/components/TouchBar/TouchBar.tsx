@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -47,17 +46,20 @@ export function TouchBar({
   }, []);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-24 bg-[#0a0a0a] border-t border-white/10 flex flex-col items-center justify-center px-4 z-50 shadow-2xl touchbar-shadow">
+    <div className="fixed bottom-0 left-0 right-0 h-28 bg-black border-t border-white/10 flex flex-col items-center justify-center px-4 z-50 shadow-2xl touchbar-shadow">
       <div className="absolute inset-0 pointer-events-none touchbar-gradient opacity-10" />
       
-      <div className="relative w-full max-w-6xl flex items-center h-12 px-2 rounded-xl bg-[#050505] shadow-inner border border-white/5">
+      {/* The Physical Strip */}
+      <div className="relative w-full max-w-6xl flex items-center h-[42px] px-1 rounded-[10px] bg-[#050505] shadow-[inset_0_0_10px_rgba(0,0,0,0.8)] border border-white/5 overflow-hidden">
         {showFnKeys ? (
           <FunctionKeys />
         ) : (
           <>
             <EscKey />
-            <AppContextArea app={activeApp} />
-            <AIQuickActions app={activeApp} />
+            <div className="flex-1 flex items-center overflow-hidden">
+              <AppContextArea app={activeApp} />
+              <AIQuickActions app={activeApp} />
+            </div>
             <ControlStrip 
               volume={volume} 
               brightness={brightness} 
@@ -68,20 +70,21 @@ export function TouchBar({
         )}
       </div>
       
-      <div className="mt-2 flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div className="h-0.5 w-1 rounded-full bg-white/5" />
-          <div className="text-[7px] uppercase tracking-[0.3em] text-white/20 font-bold select-none">
-            WebTouch Bar
+      {/* Brand & Fn Toggle Hint */}
+      <div className="mt-3 flex items-center gap-6">
+        <div className="flex items-center gap-3">
+          <div className="h-[1px] w-12 bg-white/5" />
+          <div className="text-[9px] uppercase tracking-[0.4em] text-white/20 font-bold select-none">
+            Touch Bar
           </div>
-          <div className="h-0.5 w-1 rounded-full bg-white/5" />
+          <div className="h-[1px] w-12 bg-white/5" />
         </div>
         <button 
           onMouseDown={() => setShowFnKeys(true)}
           onMouseUp={() => setShowFnKeys(false)}
-          className="text-[8px] bg-white/5 border border-white/10 px-2 py-0.5 rounded text-white/40 hover:text-white/60 transition-colors uppercase font-bold"
+          className="text-[9px] bg-white/5 border border-white/10 px-3 py-1 rounded-md text-white/40 hover:text-white/60 active:bg-white/10 transition-all uppercase font-bold tracking-wider"
         >
-          Hold for Fn
+          Hold Fn
         </button>
       </div>
     </div>
