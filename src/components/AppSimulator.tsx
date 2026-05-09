@@ -1,9 +1,8 @@
-
 'use client';
 
 import React from 'react';
 import { AppContext } from '@/lib/types';
-import { Compass, Music, FileText, Calendar, Image as ImageIcon, LayoutGrid, X, Minus, Maximize2 } from 'lucide-react';
+import { Compass, Music, FileText, Calendar, Image as ImageIcon, LayoutGrid, Play, X, Minus, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
