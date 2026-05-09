@@ -1,5 +1,5 @@
 
-export type AppContext = 'Safari' | 'Music' | 'Text Editor' | 'Calendar' | 'Photos' | 'Finder' | 'System';
+export type AppContext = 'Safari' | 'Music' | 'Text Editor' | 'Calendar' | 'Photos' | 'Finder' | 'System Settings';
 
 export interface TouchBarAction {
   id: string;
@@ -10,8 +10,9 @@ export interface TouchBarAction {
 }
 
 export interface UserPreferences {
-  enabledShortcuts: string[];
-  controlStripExpanded: boolean;
+  showControlStrip: boolean;
+  showFnKeys: boolean;
   brightness: number;
   volume: number;
+  activeApp: AppContext;
 }

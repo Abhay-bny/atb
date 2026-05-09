@@ -24,9 +24,11 @@ import {
   Folder,
   Layout,
   ArrowUpDown,
-  Search
+  Search,
+  Smile
 } from 'lucide-react';
 import { AppContext } from '@/lib/types';
+import { EmojiPicker } from './EmojiPicker';
 import { cn } from '@/lib/utils';
 
 interface AppContextAreaProps {
@@ -68,6 +70,7 @@ export function AppContextArea({ app }: AppContextAreaProps) {
             <button className="touchbar-button h-8 w-8"><Bold size={14} strokeWidth={STROKE} /></button>
             <button className="touchbar-button h-8 w-8"><Italic size={14} strokeWidth={STROKE} /></button>
             <button className="touchbar-button h-8 w-8"><List size={14} strokeWidth={STROKE} /></button>
+            <EmojiPicker />
           </div>
         );
       case 'Calendar':
@@ -97,6 +100,13 @@ export function AppContextArea({ app }: AppContextAreaProps) {
             <button className="touchbar-button h-8 px-3 gap-2 text-[11px] font-medium"><Folder size={12} strokeWidth={STROKE} /> New Folder</button>
             <button className="touchbar-button h-8 w-8"><Search size={14} strokeWidth={STROKE} /></button>
             <button className="touchbar-button h-8 w-8"><Share size={14} strokeWidth={STROKE} /></button>
+          </div>
+        );
+      case 'System Settings':
+        return (
+          <div className="flex items-center gap-2">
+            <button className="touchbar-button h-8 px-4 text-[11px] font-medium bg-primary/20 border border-primary/30">Reset to Defaults</button>
+            <button className="touchbar-button h-8 px-4 text-[11px] font-medium">View Layouts</button>
           </div>
         );
       default:

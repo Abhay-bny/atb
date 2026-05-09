@@ -8,17 +8,17 @@ import {
   Volume2, 
   VolumeX, 
   Sun, 
-  Moon, 
-  Mic, 
-  Lock,
-  Search,
   Settings,
   Layers,
   LayoutGrid,
   Camera,
   Play,
   SkipBack,
-  SkipForward
+  SkipForward,
+  Mic,
+  Lock,
+  Search,
+  MessageSquare
 } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -33,9 +33,14 @@ interface ControlStripProps {
 
 export function ControlStrip({ volume, brightness, onVolumeChange, onBrightnessChange }: ControlStripProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isSiriActive, setIsSiriActive] = useState(false);
 
-  // Icon stroke width for that thin HIG look
   const STROKE = 1.2;
+
+  const handleSiriClick = () => {
+    setIsSiriActive(true);
+    setTimeout(() => setIsSiriActive(false), 3000);
+  };
 
   return (
     <div className={cn(
@@ -44,7 +49,7 @@ export function ControlStrip({ volume, brightness, onVolumeChange, onBrightnessC
     )}>
       <button 
         onClick={() => setIsExpanded(!isExpanded)}
-        className="touchbar-button h-8 w-8 text-white/80"
+        className="touchbar-button h-8 w-6 text-white/80"
       >
         {isExpanded ? <ChevronRight size={14} strokeWidth={STROKE} /> : <ChevronLeft size={14} strokeWidth={STROKE} />}
       </button>
@@ -83,7 +88,6 @@ export function ControlStrip({ volume, brightness, onVolumeChange, onBrightnessC
                 onValueChange={(val) => onBrightnessChange(val[0])} 
                 max={100} 
                 step={1} 
-                className="cursor-pointer"
               />
             </div>
           </PopoverContent>
@@ -106,14 +110,28 @@ export function ControlStrip({ volume, brightness, onVolumeChange, onBrightnessC
                 onValueChange={(val) => onVolumeChange(val[0])} 
                 max={100} 
                 step={1} 
-                className="cursor-pointer"
               />
             </div>
           </PopoverContent>
         </Popover>
 
-        <button className="touchbar-button h-8 w-8">
-          <Settings size={14} strokeWidth={STROKE} />
+        {/* Siri Button */}
+        <button 
+          onClick={handleSiriClick}
+          className={cn(
+            "touchbar-button h-8 w-10 transition-colors",
+            isSiriActive && "text-blue-400 bg-blue-400/10 border border-blue-400/30"
+          )}
+        >
+          <div className={cn(
+            "relative",
+            isSiriActive && "animate-pulse"
+          )}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="currentColor" fillOpacity="0.2"/>
+              <path d="M12 6C8.69 6 6 8.69 6 12C6 15.31 8.69 18 12 18C15.31 18 18 15.31 18 12C18 8.69 15.31 6 12 6ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z" fill="currentColor"/>
+            </svg>
+          </div>
         </button>
       </div>
     </div>

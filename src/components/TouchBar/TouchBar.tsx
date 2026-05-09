@@ -1,11 +1,12 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { EscKey } from './EscKey';
 import { ControlStrip } from './ControlStrip';
 import { AppContextArea } from './AppContextArea';
 import { AIQuickActions } from './AIQuickActions';
+import { FunctionKeys } from './FunctionKeys';
 import { AppContext } from '@/lib/types';
 
 interface TouchBarProps {
@@ -23,33 +24,65 @@ export function TouchBar({
   onVolumeChange, 
   onBrightnessChange 
 }: TouchBarProps) {
+  const [showFnKeys, setShowFnKeys] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Fn' || e.key === 'Control') {
+        setShowFnKeys(true);
+      }
+    };
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Fn' || e.key === 'Control') {
+        setShowFnKeys(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-20 bg-[#0a0a0a] border-t border-white/10 flex flex-col items-center justify-center px-4 z-50 shadow-2xl touchbar-shadow">
-      {/* Glossy Reflection overlay */}
+    <div className="fixed bottom-0 left-0 right-0 h-24 bg-[#0a0a0a] border-t border-white/10 flex flex-col items-center justify-center px-4 z-50 shadow-2xl touchbar-shadow">
       <div className="absolute inset-0 pointer-events-none touchbar-gradient opacity-10" />
       
       <div className="relative w-full max-w-6xl flex items-center h-12 px-2 rounded-xl bg-[#050505] shadow-inner border border-white/5">
-        <EscKey />
-        
-        <AppContextArea app={activeApp} />
-        
-        <AIQuickActions app={activeApp} />
-        
-        <ControlStrip 
-          volume={volume} 
-          brightness={brightness} 
-          onVolumeChange={onVolumeChange} 
-          onBrightnessChange={onBrightnessChange} 
-        />
+        {showFnKeys ? (
+          <FunctionKeys />
+        ) : (
+          <>
+            <EscKey />
+            <AppContextArea app={activeApp} />
+            <AIQuickActions app={activeApp} />
+            <ControlStrip 
+              volume={volume} 
+              brightness={brightness} 
+              onVolumeChange={onVolumeChange} 
+              onBrightnessChange={onBrightnessChange} 
+            />
+          </>
+        )}
       </div>
       
-      {/* Visual Indicator of the physical hardware bezel */}
-      <div className="mt-1 flex items-center gap-2">
-        <div className="h-0.5 w-1 rounded-full bg-white/5" />
-        <div className="text-[7px] uppercase tracking-[0.3em] text-white/20 font-bold select-none">
-          WebTouch Bar
+      <div className="mt-2 flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <div className="h-0.5 w-1 rounded-full bg-white/5" />
+          <div className="text-[7px] uppercase tracking-[0.3em] text-white/20 font-bold select-none">
+            WebTouch Bar
+          </div>
+          <div className="h-0.5 w-1 rounded-full bg-white/5" />
         </div>
-        <div className="h-0.5 w-1 rounded-full bg-white/5" />
+        <button 
+          onMouseDown={() => setShowFnKeys(true)}
+          onMouseUp={() => setShowFnKeys(false)}
+          className="text-[8px] bg-white/5 border border-white/10 px-2 py-0.5 rounded text-white/40 hover:text-white/60 transition-colors uppercase font-bold"
+        >
+          Hold for Fn
+        </button>
       </div>
     </div>
   );
